@@ -163,9 +163,12 @@ function displayBooks(books) {
     // Get book details
     const title = book.title;
     const author =
-      book.authors.length > 0 ? book.authors[0].name : 'Unknown Author';
+      book.authors.length > 0
+        ? book.authors.map((author) => author.name).join(', ')
+        : 'Unknown Author';
     const coverImage = book.formats['image/jpeg'] || 'default-cover.png'; // Use a default if no cover is available
-    const genre = book.subjects.length > 0 ? book.subjects[0] : 'Unknown Genre';
+    const genre =
+      book.subjects.length > 0 ? book.subjects.join(', ') : 'Unknown Genre';
     const bookId = book.id;
 
     // Create the HTML structure for the book card
