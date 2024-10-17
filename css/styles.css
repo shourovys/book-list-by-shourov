@@ -258,7 +258,7 @@ button:hover {
   flex-grow: 1;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 425px) {
   body {
     font-size: 12px;
   }
