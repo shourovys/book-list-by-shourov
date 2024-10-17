@@ -226,9 +226,9 @@ function displayBooks(books) {
       <a href="book-details.html?id=${bookId}">
         <img src="${coverImage}" alt="${title} cover" class="book-cover">
         <h3>${title}</h3>
-        <p>Author: ${author}</p>
-        <p>Genre: ${genre}</p>
-        <p>Book Id: ${book.id}</p>
+        <p><strong>Author:</strong> ${author}</p>
+        <p><strong>Genre:</strong> ${genre}</p>
+        <p><strong>Book Id:</strong> ${book.id}</p>
         <span class="like-icon ${
           wishlist.includes(bookId) ? 'active' : ''
         }" data-id="${bookId}">&hearts;</span>

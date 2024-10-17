@@ -52,9 +52,9 @@ function displayWishlistBooks(books) {
     bookElement.innerHTML = `
       <img src="${coverImage}" alt="${book.title} cover" class="book-cover">
       <h3>${book.title}</h3>
-      <p>Author: ${book.authors.map((author) => author.name).join(', ')}</p>
-      <p>Genre: ${book.subjects.join(', ')}</p>
-      <p>Book Id: ${book.id}</p>
+      <p><strong>Author:</strong> ${book.authors.map((author) => author.name).join(', ')}</p>
+      <p><strong>Genre:</strong> ${book.subjects.join(', ')}</p>
+      <p><strong>Book Id:</strong> ${book.id}</p>
       <button class="remove-from-wishlist" data-id="${
         book.id
       }">Remove from Wishlist</button>
