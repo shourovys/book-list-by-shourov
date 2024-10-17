@@ -57,6 +57,7 @@ p {
 /* Search and Filter Section */
 #search-filter {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   margin-left: auto;
   gap: 1rem;
@@ -71,6 +72,14 @@ p {
   border-radius: 4px;
   font-size: 1rem;
   flex-grow: 1;
+}
+
+#search-bar {
+  flex-grow: 2;
+}
+
+#genre-filter {
+  max-width: 15rem;
 }
 
 /* Books list */

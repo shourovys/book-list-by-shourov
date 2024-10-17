@@ -7,6 +7,56 @@ function debounce(func, delay) {
   };
 }
 
+// Function to fetch genres/topics from the Gutendex API
+async function fetchGenres() {
+  try {
+    const response = await fetch('https://gutendex.com/books/');
+    const data = await response.json();
+
+    const genres = new Set();
+
+    // Loop through books to collect unique genres from 'subjects' or 'bookshelves'
+    data.results.forEach((book) => {
+      book.subjects.forEach((subject) => genres.add(subject));
+    });
+
+    populateGenreDropdown([...genres]);
+  } catch (error) {
+    console.error('Error fetching genres:', error);
+  }
+}
+
+// Function to populate the genre dropdown
+function populateGenreDropdown(genres) {
+  const genreFilter = document.getElementById('genre-filter');
+
+  genres.forEach((genre) => {
+    const option = document.createElement('option');
+    option.value = genre;
+    option.textContent = genre;
+    genreFilter.appendChild(option);
+  });
+}
+
+// Function to fetch books from the Gutendex API based on search query and genre filter
+async function fetchBooks(query = '', genre = '') {
+  try {
+    let apiUrl = `https://gutendex.com/books/?search=${encodeURIComponent(
+      query
+    )}`;
+
+    if (genre) {
+      apiUrl += `&topic=${encodeURIComponent(genre)}`;
+    }
+
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    displayBooks(data.results);
+  } catch (error) {
+    console.error('Error fetching books:', error);
+  }
+}
+
 // Function to display books on the page
 function displayBooks(books) {
   const booksList = document.getElementById('books-list');
@@ -26,7 +76,7 @@ function displayBooks(books) {
     const title = book.title;
     const author =
       book.authors.length > 0 ? book.authors[0].name : 'Unknown Author';
-    const coverImage = book.formats['image/jpeg'] || 'default-cover.jpg'; // Use a default if no cover is available
+    const coverImage = book.formats['image/jpeg'] || 'default-cover.png'; // Use a default if no cover is available
     const genre = book.subjects.length > 0 ? book.subjects[0] : 'Unknown Genre';
 
     // Create the HTML structure for the book card
@@ -42,29 +92,25 @@ function displayBooks(books) {
   });
 }
 
-// Function to fetch books from the Gutendex API based on the search query
-async function fetchBooks(query = '') {
-  try {
-    const response = await fetch(
-      `https://gutendex.com/books?search=${encodeURIComponent(query)}`
-    );
-    const data = await response.json();
-    displayBooks(data.results);
-  } catch (error) {
-    console.error('Error fetching books:', error);
-  }
-}
-
-// Real-time search event listener with debounce
+// Event listener for real-time search with debounce
 document.getElementById('search-bar').addEventListener(
   'input',
   debounce((e) => {
     const query = e.target.value;
-    fetchBooks(query); // Fetch books based on the search query
-  }, 500)
+    const selectedGenre = document.getElementById('genre-filter').value;
+    fetchBooks(query, selectedGenre); // Fetch books based on search query and selected genre
+  }, 300)
 );
 
-// Fetch books on page load
+// Event listener for genre filter
+document.getElementById('genre-filter').addEventListener('change', () => {
+  const query = document.getElementById('search-bar').value;
+  const selectedGenre = document.getElementById('genre-filter').value;
+  fetchBooks(query, selectedGenre); // Fetch books based on selected genre
+});
+
+// Fetch books and genres on page load
 window.onload = () => {
   fetchBooks(); // Fetch all books initially
+  fetchGenres(); // Fetch available genres
 };
