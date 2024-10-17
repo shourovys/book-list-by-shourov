@@ -1,7 +1,21 @@
+// Debounce function to limit API calls while typing
+function debounce(func, delay) {
+  let timeout;
+  return function (...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), delay);
+  };
+}
+
 // Function to display books on the page
 function displayBooks(books) {
   const booksList = document.getElementById('books-list');
   booksList.innerHTML = ''; // Clear previous content
+
+  if (books.length === 0) {
+    booksList.innerHTML = '<p>No books found.</p>';
+    return;
+  }
 
   books.forEach((book) => {
     // Create a book card
@@ -28,10 +42,12 @@ function displayBooks(books) {
   });
 }
 
-// Function to fetch books from the Gutendex API
-async function fetchBooks() {
+// Function to fetch books from the Gutendex API based on the search query
+async function fetchBooks(query = '') {
   try {
-    const response = await fetch('https://gutendex.com/books/');
+    const response = await fetch(
+      `https://gutendex.com/books?search=${encodeURIComponent(query)}`
+    );
     const data = await response.json();
     displayBooks(data.results);
   } catch (error) {
@@ -39,5 +55,16 @@ async function fetchBooks() {
   }
 }
 
+// Real-time search event listener with debounce
+document.getElementById('search-bar').addEventListener(
+  'input',
+  debounce((e) => {
+    const query = e.target.value;
+    fetchBooks(query); // Fetch books based on the search query
+  }, 500)
+);
+
 // Fetch books on page load
-window.onload = fetchBooks;
+window.onload = () => {
+  fetchBooks(); // Fetch all books initially
+};

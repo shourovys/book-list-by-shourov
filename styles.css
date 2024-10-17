@@ -70,13 +70,6 @@ p {
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 1rem;
-}
-
-#search-bar {
-  flex-grow: 1;
-}
-
-#genre-filter {
   flex-grow: 1;
 }
 
