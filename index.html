@@ -8,16 +8,18 @@
   </head>
   <body>
     <!-- Navbar -->
-    <nav>
-      <h1>Book Listing App</h1>
-      <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/wishlist.html">Wishlist</a></li>
-      </ul>
+    <nav class="">
+      <div class="nav-container">
+        <h1>Book Listing App</h1>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/wishlist.html">Wishlist</a></li>
+        </ul>
+      </div>
     </nav>
 
     <!-- Main Content -->
-    <main>
+    <main class="container">
       <!-- Search Bar and Filter Section -->
       <section id="search-filter">
         <input
@@ -25,10 +27,12 @@
           id="search-bar"
           placeholder="Search books by title..."
         />
-        <select id="genre-filter">
-          <option value="">Filter by genre</option>
-          <!-- Dynamic options will be added here -->
-        </select>
+        <div class="select-wrapper">
+          <select id="genre-filter">
+            <option value="">Filter by genre</option>
+            <!-- Dynamic options will be added here -->
+          </select>
+        </div>
       </section>
 
       <!-- Feedback Message -->

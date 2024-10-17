@@ -54,7 +54,10 @@ function displayWishlistBooks(books) {
       <h3>${book.title}</h3>
       <p>Author: ${book.authors.map((author) => author.name).join(', ')}</p>
       <p>Genre: ${book.subjects.join(', ')}</p>
-      <button class="remove-from-wishlist" data-id="${book.id}">Remove from Wishlist</button>
+      <p>Book Id: ${book.id}</p>
+      <button class="remove-from-wishlist" data-id="${
+        book.id
+      }">Remove from Wishlist</button>
     `;
 
     // Append the book element to the wishlist container

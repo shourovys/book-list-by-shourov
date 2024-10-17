@@ -193,12 +193,15 @@ document.getElementById('prev-page').addEventListener('click', () => {
 // Function to display books on the page
 function displayBooks(books) {
   const booksList = document.getElementById('books-list');
+  const feedbackElement = document.getElementById('feedback');
+
   booksList.innerHTML = ''; // Clear previous content
 
   const wishlist = getWishlist(); // Get the wishlist from localStorage
 
   if (books.length === 0) {
-    booksList.innerHTML = '<p>No books found.</p>';
+    feedbackElement.style.display = 'block';
+    feedbackElement.innerText = 'No books found.';
     return;
   }
 
@@ -225,6 +228,7 @@ function displayBooks(books) {
         <h3>${title}</h3>
         <p>Author: ${author}</p>
         <p>Genre: ${genre}</p>
+        <p>Book Id: ${book.id}</p>
         <span class="like-icon ${
           wishlist.includes(bookId) ? 'active' : ''
         }" data-id="${bookId}">&hearts;</span>
