@@ -171,12 +171,12 @@ function scrollToTop() {
     top: 0,
     behavior: 'smooth',
   });
-};
+}
 
 // Event listeners for "Next" and "Previous" buttons
 document.getElementById('next-page').addEventListener('click', () => {
   if (nextPageUrl) {
-    scrollToTop()
+    scrollToTop();
     currentPage += 1;
     fetchBooks('', '', nextPageUrl); // Fetch the next page
   }
@@ -184,7 +184,7 @@ document.getElementById('next-page').addEventListener('click', () => {
 
 document.getElementById('prev-page').addEventListener('click', () => {
   if (prevPageUrl) {
-    scrollToTop()
+    scrollToTop();
     currentPage -= 1;
     fetchBooks('', '', prevPageUrl); // Fetch the previous page
   }
@@ -269,22 +269,69 @@ function toggleWishlist(bookId, icon) {
   saveWishlist(wishlist);
 }
 
-// Event listener for real-time search with debounce
+// Function to update URL with query parameters
+function updateUrlParams(query, genre, page = 1) {
+  const url = new URL(window.location.href);
+
+  if (query) {
+    url.searchParams.set('search', query);
+  } else {
+    url.searchParams.delete('search');
+  }
+
+  if (genre) {
+    url.searchParams.set('genre', genre);
+  } else {
+    url.searchParams.delete('genre');
+  }
+
+  url.searchParams.set('page', page);
+
+  // Update URL without refreshing the page
+  window.history.pushState({}, '', url);
+}
+
 document.getElementById('search-bar').addEventListener(
   'input',
   debounce((e) => {
     const query = e.target.value;
     const selectedGenre = document.getElementById('genre-filter').value;
+    updateUrlParams(query, selectedGenre, currentPage);
     fetchBooks(query, selectedGenre); // Fetch books based on search query and selected genre
   }, 300)
 );
 
-// Event listener for genre filter
 document.getElementById('genre-filter').addEventListener('change', () => {
   const query = document.getElementById('search-bar').value;
   const selectedGenre = document.getElementById('genre-filter').value;
+  updateUrlParams(query, selectedGenre, currentPage);
   fetchBooks(query, selectedGenre); // Fetch books based on selected genre
 });
+
+// Function to get URL parameters and apply them
+function applyUrlParams() {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  const query = urlParams.get('search') || '';
+  const genre = urlParams.get('genre') || '';
+  const page = parseInt(urlParams.get('page'), 10) || 1;
+
+  // Set the input values
+  document.getElementById('search-bar').value = query;
+  document.getElementById('genre-filter').value = genre;
+
+  // Fetch the books based on the saved query and genre
+  fetchBooks(
+    query,
+    genre,
+    `https://gutendex.com/books?page=${page}&search=${encodeURIComponent(
+      query
+    )}&topic=${encodeURIComponent(genre)}`
+  );
+}
+
+// Call this function when the page loads
+window.addEventListener('load', applyUrlParams);
 
 // Fetch books and genres on page load
 window.onload = () => {
