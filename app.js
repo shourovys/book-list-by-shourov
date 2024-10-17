@@ -40,6 +40,12 @@ function populateGenreDropdown(genres) {
 
 // Function to fetch books from the Gutendex API based on search query and genre filter
 async function fetchBooks(query = '', genre = '') {
+  const loadingElement = document.getElementById('loading');
+  const booksList = document.getElementById('books-list');
+
+  // Show loading feedback
+  loadingElement.style.display = 'block';
+
   try {
     let apiUrl = `https://gutendex.com/books/?search=${encodeURIComponent(
       query
@@ -51,9 +57,20 @@ async function fetchBooks(query = '', genre = '') {
 
     const response = await fetch(apiUrl);
     const data = await response.json();
-    displayBooks(data.results);
+
+    // Hide loading feedback after data is received
+    loadingElement.style.display = 'none';
+
+    displayBooks(data.results); 
   } catch (error) {
     console.error('Error fetching books:', error);
+
+    // Hide loading feedback if an error occurs
+    loadingElement.style.display = 'none';
+
+    // Optionally show an error message
+    booksList.innerHTML =
+      '<p>Failed to load books. Please try again later.</p>';
   }
 }
 

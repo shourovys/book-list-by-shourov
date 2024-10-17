@@ -54,6 +54,13 @@ p {
   color: #555;
 }
 
+.loading-spinner {
+  font-size: 18px;
+  color: #333;
+  text-align: center;
+  margin: 20px 0;
+}
+
 /* Search and Filter Section */
 #search-filter {
   display: flex;
@@ -88,6 +95,7 @@ p {
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 1.5rem;
   margin-bottom: 2rem;
+  min-height: 60vh;
 }
 
 .book-card {
