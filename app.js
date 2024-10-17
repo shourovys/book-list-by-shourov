@@ -97,18 +97,19 @@ function updatePaginationControls(query, genre) {
   // Clear current page numbers
   pageNumbersContainer.innerHTML = '';
 
-  // Display page numbers
-  for (let i = 1; i <= totalPages; i++) {
+  // Helper function to create page number elements
+  const createPageNumber = (page) => {
     const pageNumber = document.createElement('span');
-    pageNumber.textContent = i;
+    pageNumber.textContent = page;
     pageNumber.classList.add('page-number');
 
-    if (i === currentPage) {
+    if (page === currentPage) {
       pageNumber.classList.add('active');
     }
 
     pageNumber.addEventListener('click', () => {
-      currentPage = i;
+      scrollToTop();
+      currentPage = page;
       let newPageUrl = `https://gutendex.com/books?page=${currentPage}&search=${encodeURIComponent(
         query
       )}`;
@@ -124,13 +125,58 @@ function updatePaginationControls(query, genre) {
       }
     });
 
-    pageNumbersContainer.appendChild(pageNumber);
+    return pageNumber;
+  };
+
+  // Logic to display max 6 page numbers + "..."
+  const maxPageNumbers = 6;
+
+  if (totalPages <= maxPageNumbers) {
+    // If total pages <= maxPageNumbers, display all pages
+    for (let i = 1; i <= totalPages; i++) {
+      pageNumbersContainer.appendChild(createPageNumber(i));
+    }
+  } else {
+    // Show the first 2 pages, the current page, and last 2 pages, with "..." in between
+    if (currentPage <= 3) {
+      // Case: current page is near the start
+      for (let i = 1; i <= 4; i++) {
+        pageNumbersContainer.appendChild(createPageNumber(i));
+      }
+      pageNumbersContainer.appendChild(document.createTextNode('...'));
+      pageNumbersContainer.appendChild(createPageNumber(totalPages));
+    } else if (currentPage >= totalPages - 2) {
+      // Case: current page is near the end
+      pageNumbersContainer.appendChild(createPageNumber(1));
+      pageNumbersContainer.appendChild(document.createTextNode('...'));
+      for (let i = totalPages - 3; i <= totalPages; i++) {
+        pageNumbersContainer.appendChild(createPageNumber(i));
+      }
+    } else {
+      // Case: current page is in the middle
+      pageNumbersContainer.appendChild(createPageNumber(1));
+      pageNumbersContainer.appendChild(document.createTextNode('...'));
+      pageNumbersContainer.appendChild(createPageNumber(currentPage - 1));
+      pageNumbersContainer.appendChild(createPageNumber(currentPage));
+      pageNumbersContainer.appendChild(createPageNumber(currentPage + 1));
+      pageNumbersContainer.appendChild(document.createTextNode('...'));
+      pageNumbersContainer.appendChild(createPageNumber(totalPages));
+    }
   }
 }
+
+// Function to scroll to the top
+function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+};
 
 // Event listeners for "Next" and "Previous" buttons
 document.getElementById('next-page').addEventListener('click', () => {
   if (nextPageUrl) {
+    scrollToTop()
     currentPage += 1;
     fetchBooks('', '', nextPageUrl); // Fetch the next page
   }
@@ -138,6 +184,7 @@ document.getElementById('next-page').addEventListener('click', () => {
 
 document.getElementById('prev-page').addEventListener('click', () => {
   if (prevPageUrl) {
+    scrollToTop()
     currentPage -= 1;
     fetchBooks('', '', prevPageUrl); // Fetch the previous page
   }
