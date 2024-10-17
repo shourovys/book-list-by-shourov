@@ -12,6 +12,11 @@ body {
   background-color: #f4f4f4;
 }
 
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
 nav {
   background-color: #333;
   color: white;
@@ -132,7 +137,7 @@ button:hover {
   margin-bottom: 1rem;
 }
 
-.book-card > h3 {
+.book-card h3 {
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -140,7 +145,7 @@ button:hover {
   -webkit-box-orient: vertical;
 }
 
-.book-card > p {
+.book-card p {
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -210,4 +215,14 @@ button:hover {
 /* wishlist section */
 .remove-from-wishlist {
   margin-top: 0.5rem;
+}
+
+.book-details {
+  display: flex;
+  gap: 1rem;
+  flex-basis: 50%;
+}
+
+.book-cover .book-info {
+  flex-grow: 1;
 }

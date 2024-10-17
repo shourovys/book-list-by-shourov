@@ -173,13 +173,15 @@ function displayBooks(books) {
 
     // Create the HTML structure for the book card
     bookCard.innerHTML = `
-      <img src="${coverImage}" alt="${title} cover" class="book-cover">
-      <h3>${title}</h3>
-      <p>Author: ${author}</p>
-      <p>Genre: ${genre}</p>
-      <span class="like-icon ${
-        wishlist.includes(bookId) ? 'active' : ''
-      }" data-id="${bookId}">&hearts;</span>
+      <a href="book-details.html?id=${bookId}">
+        <img src="${coverImage}" alt="${title} cover" class="book-cover">
+        <h3>${title}</h3>
+        <p>Author: ${author}</p>
+        <p>Genre: ${genre}</p>
+        <span class="like-icon ${
+          wishlist.includes(bookId) ? 'active' : ''
+        }" data-id="${bookId}">&hearts;</span>
+      </a>
     `;
 
     // Add event listener to the like icon
