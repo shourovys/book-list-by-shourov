@@ -10,12 +10,37 @@
     <!-- Navbar -->
     <nav>
       <h1>Book Listing App</h1>
+      <!-- <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Wishlist</a></li>
+      </ul> -->
     </nav>
 
     <!-- Main Content -->
     <main>
+      <!-- Search Bar and Filter Section -->
+      <section id="search-filter">
+        <input
+          type="text"
+          id="search-bar"
+          placeholder="Search books by title..."
+        />
+        <select id="genre-filter">
+          <option value="">Filter by genre</option>
+          <!-- Dynamic options will be added here -->
+        </select>
+      </section>
+
+      <!-- Books List Section -->
       <section id="books-list">
         <p>Loading books...</p>
+      </section>
+
+      <!-- Pagination Section -->
+      <section id="pagination">
+        <button id="prev-page" disabled>Previous</button>
+        <span id="page-info">Page 1</span>
+        <button id="next-page">Next</button>
       </section>
     </main>
 
