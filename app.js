@@ -38,8 +38,14 @@ function populateGenreDropdown(genres) {
   });
 }
 
-// Function to fetch books from the Gutendex API based on search query and genre filter
-async function fetchBooks(query = '', genre = '') {
+let currentPage = 1;
+let totalPages = 1;
+let nextPageUrl = null;
+let prevPageUrl = null;
+const booksParPage = 32;
+
+// Function to fetch books and handle pagination
+async function fetchBooks(query = '', genre = '', pageUrl = '') {
   const feedbackElement = document.getElementById('feedback');
   const booksList = document.getElementById('books-list');
 
@@ -47,9 +53,9 @@ async function fetchBooks(query = '', genre = '') {
   feedbackElement.style.display = 'block';
 
   try {
-    let apiUrl = `https://gutendex.com/books/?search=${encodeURIComponent(
-      query
-    )}`;
+    let apiUrl = pageUrl
+      ? pageUrl
+      : `https://gutendex.com/books?search=${encodeURIComponent(query)}`;
 
     if (genre) {
       apiUrl += `&topic=${encodeURIComponent(genre)}`;
@@ -61,15 +67,81 @@ async function fetchBooks(query = '', genre = '') {
     // Hide loading feedback after data is received
     feedbackElement.style.display = 'none';
 
-    displayBooks(data.results);
+    // Update pagination information
+    nextPageUrl = data.next;
+    prevPageUrl = data.previous;
+    totalPages = Math.ceil(data.count / booksParPage);
+
+    displayBooks(data.results); // Display books
+    updatePaginationControls(query, genre); // Update pagination buttons
   } catch (error) {
     console.error('Error fetching books:', error);
 
     // Optionally show an error message
-    feedbackElement.innerText =
-      'Failed to load books. Please try again later.';
+    feedbackElement.innerText = 'Failed to load books. Please try again later.';
   }
 }
+
+// Update the pagination controls (Next, Previous, Page Numbers)
+function updatePaginationControls(query, genre) {
+  const prevBtn = document.getElementById('prev-page');
+  const nextBtn = document.getElementById('next-page');
+  const pageNumbersContainer = document.getElementById('page-numbers');
+
+  // Enable or disable "Previous" button
+  prevBtn.disabled = !prevPageUrl;
+
+  // Enable or disable "Next" button
+  nextBtn.disabled = !nextPageUrl;
+
+  // Clear current page numbers
+  pageNumbersContainer.innerHTML = '';
+
+  // Display page numbers
+  for (let i = 1; i <= totalPages; i++) {
+    const pageNumber = document.createElement('span');
+    pageNumber.textContent = i;
+    pageNumber.classList.add('page-number');
+
+    if (i === currentPage) {
+      pageNumber.classList.add('active');
+    }
+
+    pageNumber.addEventListener('click', () => {
+      currentPage = i;
+      let newPageUrl = `https://gutendex.com/books?page=${currentPage}&search=${encodeURIComponent(
+        query
+      )}`;
+
+      if (genre) {
+        fetchBooks(
+          query,
+          genre,
+          `${newPageUrl}&topic=${encodeURIComponent(genre)}`
+        ); // Fetch books with query and genre
+      } else {
+        fetchBooks(query, '', newPageUrl); // Fetch books with query only
+      }
+    });
+
+    pageNumbersContainer.appendChild(pageNumber);
+  }
+}
+
+// Event listeners for "Next" and "Previous" buttons
+document.getElementById('next-page').addEventListener('click', () => {
+  if (nextPageUrl) {
+    currentPage += 1;
+    fetchBooks('', '', nextPageUrl); // Fetch the next page
+  }
+});
+
+document.getElementById('prev-page').addEventListener('click', () => {
+  if (prevPageUrl) {
+    currentPage -= 1;
+    fetchBooks('', '', prevPageUrl); // Fetch the previous page
+  }
+});
 
 // Function to display books on the page
 function displayBooks(books) {
