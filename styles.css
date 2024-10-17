@@ -99,6 +99,7 @@ p {
 }
 
 .book-card {
+  position: relative;
   background-color: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -128,6 +129,21 @@ p {
   -webkit-line-clamp: 3;
   line-clamp: 3;
   -webkit-box-orient: vertical;
+}
+
+.like-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 40px;
+  color: #ccc;
+  cursor: pointer;
+  font-family: italic, sans-serif;
+  font-weight: bold;
+}
+
+.like-icon.active {
+  color: #e74c3c;
 }
 
 /* Pagination Section */
