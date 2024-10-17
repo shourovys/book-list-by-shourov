@@ -79,6 +79,11 @@ select {
   margin: 0.5rem 0 1rem 0;
 }
 
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
 button {
   background-color: #f0f0f0;
   border: 1px solid #ccc;
@@ -264,6 +269,11 @@ button:hover {
 
   .container {
     padding: 1rem;
+  }
+
+  .logo,
+  .title {
+    font-size: 1rem;
   }
 
   #search-filter {

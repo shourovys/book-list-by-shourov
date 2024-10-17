@@ -4,13 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Book Listing App</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
     <!-- Navbar -->
     <nav class="">
       <div class="nav-container">
-        <h1>Book Listing App</h1>
+        <a href="/" class="logo">Book Listing App</a>
         <ul>
           <li><a href="/">Home</a></li>
           <li><a href="/wishlist.html">Wishlist</a></li>
@@ -28,7 +28,7 @@
           placeholder="Search books by title..."
         />
         <div class="select-wrapper">
-          <select id="genre-filter">
+          <select id="genre-filter" aria-placeholder="Filter by genre">
             <option value="">Filter by genre</option>
             <!-- Dynamic options will be added here -->
           </select>
@@ -52,6 +52,6 @@
     </main>
 
     <!-- Link to JavaScript file -->
-    <script src="app.js"></script>
+    <script src="js/app.js"></script>
   </body>
 </html>

@@ -216,7 +216,7 @@ function displayBooks(books) {
       book.authors.length > 0
         ? book.authors.map((author) => author.name).join(', ')
         : 'Unknown Author';
-    const coverImage = book.formats['image/jpeg'] || 'default-cover.png'; // Use a default if no cover is available
+    const coverImage = book.formats['image/jpeg'] || 'assets/default-cover.png'; // Use a default if no cover is available
     const genre =
       book.subjects.length > 0 ? book.subjects.join(', ') : 'Unknown Genre';
     const bookId = book.id;
@@ -237,7 +237,10 @@ function displayBooks(books) {
 
     // Add event listener to the like icon
     const likeIcon = bookCard.querySelector('.like-icon');
-    likeIcon.addEventListener('click', () => toggleWishlist(bookId, likeIcon));
+    likeIcon.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleWishlist(bookId, likeIcon);
+    });
 
     // Append the book card to the books list
     booksList.appendChild(bookCard);

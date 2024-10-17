@@ -46,7 +46,7 @@ function displayWishlistBooks(books) {
     bookElement.classList.add('book-card');
 
     // Get book cover image (we assume the first image format in the object)
-    const coverImage = book.formats['image/jpeg'] || 'default-cover.png';
+    const coverImage = book.formats['image/jpeg'] || 'assets/default-cover.png';
 
     // Create book element HTML
     bookElement.innerHTML = `
